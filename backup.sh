@@ -2,6 +2,8 @@
 set -eo pipefail
 [ "${DEBUG:-false}" = "true" ] && set -x
 
+cd "$(dirname "$0")"
+
 # === .env自動読み込み ===
 if [ -f .env ]; then
   # exportのみ有効な行を読み込む
