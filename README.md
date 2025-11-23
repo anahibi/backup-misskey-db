@@ -1,4 +1,4 @@
-# MisskeyDB Backup (for docker)
+# Backup Misskey DB(Postgresql and Redis on Docker)
 
 Misskeyのデータベースをバックアップし、結果をDiscordへ通知するシェルスクリプトです。  
 
