@@ -30,9 +30,18 @@ cronを用いて定期実行する例です。
 
 ## リストア例
 
+Postgresql
+
 ```
 docker exec -i middkey-db-1 pg_restore -U misskey -d mk1 < backup.dump
 
+# あるいは
+docker compose -f compose.yml exec -T db pg_restore -U misskey -d mk1 < backup.dump
+```
+
+Redis
+
+```
 docker compose stop redis
 docker run --rm -v misskey_redis-data:/data -v $(pwd):/backup busybox cp /backup/dump.rdb /data/dump.rdb
 docker compose start redis
