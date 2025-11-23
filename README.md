@@ -27,3 +27,13 @@ cronを用いて定期実行する例です。
 ```
 0 3 * * * /opt/backup/backup.sh
 ```
+
+## リストア例
+
+```
+docker exec -i middkey-db-1 pg_restore -U misskey -d mk1 < backup.dump
+
+docker compose stop redis
+docker run --rm -v misskey_redis-data:/data -v $(pwd):/backup busybox cp /backup/dump.rdb /data/dump.rdb
+docker compose start redis
+```
