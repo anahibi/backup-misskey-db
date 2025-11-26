@@ -1,4 +1,4 @@
-# Backup Misskey DB(Postgresql and Redis with Docker)
+# Backup Misskey DB(for Docker)
 
 MisskeyのデータベースをS3互換のオブジェクトストレージへバックアップします。  
 対象のミドルウェアは、PostgresqlおよびRedisです。  
