@@ -1,31 +1,55 @@
-# midb-backup
+# Backup Misskey DB(Postgresql and Redis with Docker)
 
-Misskeyのデータベースをバックアップし、結果をDiscordへ通知するシェルスクリプトです。  
+MisskeyのデータベースをS3互換のオブジェクトストレージへバックアップします。  
+対象のミドルウェアは、PostgresqlおよびRedisです。  
+バックアップ成否をDiscordへ通知することも可能です。  
 
-## 必要なもの
+## 要件
 
-事前にs3cmdをインストールし、設定ファイル( `/root/.s3cfg` )を作成してください。
+- Misskey、Postgresql、RedisがDockerコンテナで動作していること。
+- 次のソフトウェアが導入済みであること。
+  - s3cmd
 
 ## 使い方
 
-.envファイルを作成し、環境変数を設定します。
+任意のディレクトリにgit cloneします。  
+
+```
+cd /opt/backup/
+git clone https://github.com/anahibi/backup-misskey-db.git .
+```
+
+.envファイルを作成します。
 
 ```
 cp .env.example .env
 ```
 
-環境変数を読み込んで実行します。  
-おそらくroot権限が必要です。
+実行します。  
 
 ```
-source .env
-bash backup.sh
+./backup.sh
 ```
 
 ## cronの設定例
 
-cronを用いて定期実行する例です。
+cronに設定することで、バックアップを自動化できます。  
+以下は毎日3時に定期実行する例です。
 
 ```
-0 3 * * * . /root/midb-backup/.env && /root/midb-backup/backup.sh
+0 3 * * * /opt/backup/backup.sh
+```
+
+## リストアの例
+
+オブジェクトストレージから、リストアしたい日付のバックアップデータをダウンロードします。
+
+```
+./get_backup.sh 2025-10-29
+```
+
+リストアを実行します。
+
+```
+./restore.sh --force
 ```
