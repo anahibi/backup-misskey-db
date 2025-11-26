@@ -7,6 +7,7 @@ MisskeyのデータベースをS3互換のオブジェクトストレージへ�
 ## 要件
 
 - Misskey、Postgresql、RedisがDockerコンテナで動作していること。
+  - [compose.ymlの例](https://github.com/anahibi/teleho-misc/blob/main/compose.yml)
 - 次のソフトウェアが導入済みであること。
   - s3cmd
 
