@@ -1,12 +1,23 @@
-# Backup Misskey DB(Postgresql and Redis on Docker)
+# Backup Misskey DB(Postgresql and Redis with Docker)
 
-Misskeyのデータベースをバックアップし、結果をDiscordへ通知するシェルスクリプトです。  
+MisskeyのデータベースをS3互換のオブジェクトストレージへバックアップします。  
+対象のミドルウェアは、PostgresqlおよびRedisです。  
+バックアップ成否をDiscordへ通知することも可能です。  
 
-## 必要なもの
+## 要件
 
-事前にs3cmdをインストールし、設定ファイルを作成してください。
+- Misskey、Postgresql、RedisがDockerコンテナで動作していること。
+- 次のソフトウェアが導入済みであること。
+  - s3cmd
 
 ## 使い方
+
+任意のディレクトリにgit cloneします。  
+
+```
+cd /opt/backup/
+git clone https://github.com/anahibi/backup-misskey-db.git .
+```
 
 .envファイルを作成します。
 
@@ -17,32 +28,28 @@ cp .env.example .env
 実行します。  
 
 ```
-bash backup.sh
+./backup.sh
 ```
 
 ## cronの設定例
 
-cronを用いて定期実行する例です。
+cronに設定することで、バックアップを自動化できます。  
+以下は毎日3時に定期実行する例です。
 
 ```
 0 3 * * * /opt/backup/backup.sh
 ```
 
-## リストア例
+## リストアの例
 
-Postgresql
-
-```
-docker exec -i middkey-db-1 pg_restore -U misskey -d mk1 < backup.dump
-
-# あるいは
-docker compose -f compose.yml exec -T db pg_restore -U misskey -d mk1 < backup.dump
-```
-
-Redis
+オブジェクトストレージから、リストアしたい日付のバックアップデータをダウンロードします。
 
 ```
-docker compose stop redis
-docker run --rm -v misskey_redis-data:/data -v $(pwd):/backup busybox cp /backup/dump.rdb /data/dump.rdb
-docker compose start redis
+./get_backup.sh 2025-10-29
+```
+
+リストアを実行します。
+
+```
+./restore.sh --force
 ```
