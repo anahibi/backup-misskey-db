@@ -1,8 +1,8 @@
 # Backup Misskey DB(for Docker)
 
 MisskeyのデータベースをS3互換のオブジェクトストレージへバックアップします。  
-対象のミドルウェアは、PostgresqlおよびRedisです。  
-バックアップ成否をDiscordへ通知することも可能です。  
+対象のデータベースは、PostgresqlとRedisです。  
+バックアップ成否をDiscordへ通知することが可能です。  
 
 ## 要件
 
