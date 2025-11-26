@@ -15,7 +15,7 @@ MisskeyのデータベースをS3互換のオブジェクトストレージへ�
 任意のディレクトリにgit cloneします。  
 
 ```
-cd /opt/backup/
+mkdir /opt/backup && cd /opt/backup/
 git clone https://github.com/anahibi/backup-misskey-db.git .
 ```
 
