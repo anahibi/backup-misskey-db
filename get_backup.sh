@@ -65,13 +65,13 @@ log "Get ${SERVICE_NAME} archive job"
 log "Backup date: ${BACKUP_DATE}"
 
 # 最新のSQLバックアップファイルを取得
-TAERGET_DATE_SQL="s3:$(s3cmd -c $S3CFG_FILEls s3://$SERVICE_NAME/$BACKUP_DATE/ |grep dump |head -n1 |cut -d ":" -f3)"
+TAERGET_DATE_SQL="s3:$(s3cmd -c $S3CFG_FILE ls s3://$SERVICE_NAME/$BACKUP_DATE/ |grep dump |head -n1 |cut -d ":" -f3)"
 log "Target backup file: ${TAERGET_DATE_SQL}"
 s3cmd -c $S3CFG_FILE get ${TAERGET_DATE_SQL} $TEMP_DIR/backup.dump.enc
 openssl enc -d -aes-256-cbc -salt -pbkdf2 -in $TEMP_DIR/backup.dump.enc -out backup.dump -k $ENCRYPTION_KEY
 
 # 最新のRedisバックアップファイルを取得
-TAERGET_DATE_REDIS="s3:$(s3cmd -c $S3CFG_FILEls s3://$SERVICE_NAME/$BACKUP_DATE/ |grep rdb |head -n1 |cut  -d ":" -f3)"
+TAERGET_DATE_REDIS="s3:$(s3cmd -c $S3CFG_FILE ls s3://$SERVICE_NAME/$BACKUP_DATE/ |grep rdb |head -n1 |cut  -d ":" -f3)"
 log "Target backup file: ${TAERGET_DATE_REDIS}"
 s3cmd -c $S3CFG_FILE get ${TAERGET_DATE_REDIS} $TEMP_DIR/backup.rdb.enc
 openssl enc -d -aes-256-cbc -salt -pbkdf2 -in $TEMP_DIR/backup.rdb.enc -out backup.rdb -k $ENCRYPTION_KEY
