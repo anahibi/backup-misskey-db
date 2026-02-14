@@ -74,9 +74,10 @@ fi
 
 # === PostgreSQLバックアップ取得 ===
 log "Backing up PostgreSQL: $POSTGRES_DB"
-if ! $DC_BASE exec -T \
+if ! nice -n 19 ionice -c3 \
+    $DC_BASE exec -T \
     "$POSTGRES_CONTAINER" \
-    pg_dump -Fc -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
+    pg_dump -Fc -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v \
     > "$BACKUP_SQL_FILE"; then
   error_exit "Failed to dump PostgreSQL database ($POSTGRES_CONTAINER)"
 fi

@@ -30,7 +30,7 @@ $DC_BASE up ${POSTGRES_CONTAINER} -d
 
 # バックアップファイルのリストア
 $DC_BASE exec -T ${POSTGRES_CONTAINER} \
- pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists < backup.dump
+ pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists -v < backup.dump
 
 echo "Start restore redis"
 
